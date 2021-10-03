@@ -7,7 +7,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 import Answers from './Answers';
 import {useDispatch} from 'react-redux';
-import { deleteQuestion,likeQuestion} from '../../../redux/actions/questions';
+import { deleteQuestion,likeQuestion,answerQuestion} from '../../../redux/actions/questions';
 
 
 const QUESTION = ({question,setCurrentId})=>{
@@ -15,21 +15,25 @@ const QUESTION = ({question,setCurrentId})=>{
 const classes = useStyles();
 
 const dispatch = useDispatch();
+const [formData,setFormData]= React.useState({answer:''})
 
 const handleSubmit = (event)=>{
     event.preventDefault();
+    dispatch(answerQuestion(question._id,formData))
     Clear()
 }
  const Clear = ()=>{
-
+    setFormData({answer:''})
  }
+ 
+//  console.log("answer:",formData)
     return (
        <Card className={classes.card}>
            <div>
                <Typography style={{marginLeft:'50px'}} color="primary" variant="p">{`${question.creator} Postesd `}{moment(question.createdAt).fromNow()}</Typography>
            </div>
            <div className={classes.overlay2}>
-               <Button size="small" color="primary" onClick={()=>setCurrentId(question._id)}>
+               <Button size="small" variant="outlined" color="primary" onClick={()=>setCurrentId(question._id)}>
                    <EditIcon fontSize="default" color="primary"/>
                     Edit
                </Button>
@@ -45,18 +49,21 @@ const handleSubmit = (event)=>{
            <div >
 
             <div className="Answers">
-              <Answers/>
+              <Answers question={question}/>
             </div>
            <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
 
             <TextField 
-            name="Answer" 
             variant="outlined" 
             label="Answer"
             fullWidth 
+            multiline
+            rows={4}
+            value={formData.answer}
+            onChange={(event)=>setFormData({...formData,answer:event.target.value})}
             />
 
-            <Button className={classes.postAnswer}variant="contained" color="primary" size="small" type="submit" >Post</Button>
+            <Button className={classes.postAnswer} variant="outlined" color="primary" size="small" type="submit" >Post Answer</Button>
             </form> 
 
            </div>
@@ -66,7 +73,7 @@ const handleSubmit = (event)=>{
                    <ThumbUpAltIcon fontSize="small"/>
                    Like {question.likeCount}
                    </Button>
-                   <Button size="small" color="primary" onClick={()=>dispatch(deleteQuestion(question._id))}>
+                   <Button size="small" variant="outlined" color="primary" onClick={()=>dispatch(deleteQuestion(question._id))}>
                    <DeleteIcon fontSize="small"/>
                       Delete
                    </Button>
