@@ -36,11 +36,37 @@ export const updateQuestion = async (req, res) => {
 
 export const deleteQuestion = async (req, res) => {
   const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send("No Question with that id");
+  if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No Question with that id");
 
-  await QUESTION.findByIdAndDelete(id);
+  await QUESTION.findByIdAndRemove(id);
   res.json({ message: "Question Removed Successfully!!👍" });
 
-  console.log('Deleted')
 };
+
+export const likeQuestion = async(req,res) =>{
+
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No Question with that id");
+
+  const question = await QUESTION.findById(id);
+
+  const updatedQuestion = await QUESTION.findByIdAndUpdate(id,{likeCount:question.likeCount+1},{new:true})
+
+  res.json(updatedQuestion)
+
+}
+
+
+export const answerQuestion = async(req,res)=>{
+  const {id} = req.params;
+  const {answer} =req.body;
+
+  console.log("question and id",answer,id)
+
+  if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No Question with that id");
+
+  const question =  await QUESTION.findById(id);
+  const newQuestion = question.anwers=answer;
+  const answeredQuestion = await QUESTION.findByIdAndUpdate(id,{anwers:newQuestion},{new:true})
+  res.json(answeredQuestion)
+}
