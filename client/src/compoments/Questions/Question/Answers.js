@@ -30,15 +30,16 @@ const Answers =  ({question})=>{
 
   console.log("ANswer",question)
 const classes  =useStyles();
+const [user,setUser] = React.useState(JSON.parse(localStorage.getItem('profile')))
     return (
         <>
           <List className={classes.root}>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="https://avatars.githubusercontent.com/u/59208992?v=4" />
+          <Avatar alt={user?.result?.familyName} src={user?.result?.imageUrl} />
         </ListItemAvatar>
         <ListItemText
-          primary={`${question.creator} Postesd ${moment(question.createdAt).fromNow()}`}
+          primary={`${user?.result?.familyName} Postesd ${moment(question.createdAt).fromNow()}`}
           secondary={
             <React.Fragment>
               <Typography

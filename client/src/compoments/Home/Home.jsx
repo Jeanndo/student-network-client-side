@@ -1,62 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Container, AppBar, Typography, Grow, Grid } from "@material-ui/core";
-import StudentQuestions from "../../Images/student.png";
+import { Container,Grow, Grid } from "@material-ui/core";
 import Form from "../Form/Form";
 import QUESTIONS from "../Questions/Questions";
-import useStyles from "../../styles";
 import { useDispatch } from "react-redux";
 import { getQuestions } from "../../redux/actions/questions";
-import Darktheme from "react-dark";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import RestoreIcon from "@material-ui/icons/Restore";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
+import Navbar from "../Navbar/Navbar";
 
 export const Home = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const [currentId, setCurrentId] = useState(null);
-  const [value, setValue] = React.useState(0);
 
+  // console.log(user?.result?.name)
   useEffect(() => {
     dispatch(getQuestions());
   }, [currentId, dispatch]);
 
+
   return (
     <div max-width="lg">
-      <AppBar
-        className={classes.appBar}
-        position="static"
-        color="inherit"
-        elevation={0}
-      >
-        <Typography className={classes.heading} variant="h6" align="center">
-          Student Connection
-        </Typography>
-        <img
-          className={classes.image}
-          src={StudentQuestions}
-          alt="student-connect"
-          height="60"
-        />
-        <Darktheme />
-
-        <BottomNavigation
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
-          showLabels
-          className={classes.root}
-        >
-          <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
-        </BottomNavigation>
-      </AppBar>
-
+      <Navbar/>
       <Grow in id="root">
         <Container className="question-container">
           <Grid
