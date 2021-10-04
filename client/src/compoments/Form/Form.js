@@ -14,16 +14,16 @@ const Form = ({currentId,setCurrentId})=>{
 
  const question = useSelector((state)=>currentId?state.questions.find((q)=>q._id===currentId):null);
 
- const[postData,setPostData] = useState({creator:'',title:'',question:'',selectedFile:''})
+ const[postData,setPostData] = useState({title:'',question:'',selectedFile:''})
 
  const handleSubmit =  (event)=>{
 
     event.preventDefault();
 
     if(currentId){
-    dispatch(updateQuestion(currentId,postData))
+    dispatch(updateQuestion(currentId,{...postData,name:user?.result?.names}))
     }else{
-    dispatch(createQuestions(postData))
+    dispatch(createQuestions({...postData,name:user?.result?.name}))
     }
   
     Clear()
@@ -31,34 +31,30 @@ const Form = ({currentId,setCurrentId})=>{
  }
 
 useEffect(()=>{
-
-    if(question) setPostData(question);  
-
+if(question) setPostData(question);  
 },[question]);
 
 const Clear = ()=>{
     setCurrentId(null);
 
-    setPostData({creator:'',title:'',question:'',selectedFile:''});
-  
+    setPostData({title:'',question:'',selectedFile:''});
 }
 
+if(!user?.result?.name){
     return (
-        <>
-        {user?(
+        <Paper className={classes.paper} style={{marginTop:'100px',width:'300px',color:'blue'}}>
+         <Typography variant="h6" align="center">
+          Please sign in to ask,asnwer and like others questions.
+         </Typography>
+        </Paper>
+    )
+}
+    return (
+     
             <Paper className={`${classes.paper } form-paper`} elevation={0}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
 
                 <Typography variant="h6">{currentId?'Editing a question':'Creating a Question'}</Typography>
-                <TextField 
-                name="creator" 
-                variant="outlined" 
-                label="Creator"
-                fullWidth 
-                value={postData.creator}
-                onChange = {(event)=>setPostData({...postData,creator:event.target.value})}
-                />
-
                 <TextField 
                 name="title" 
                 variant="outlined" 
@@ -71,6 +67,8 @@ const Clear = ()=>{
                 name="question" 
                 variant="outlined" 
                 label="Question"
+                multiline
+                rows={5}
                 fullWidth 
                 value={postData.question}
                 onChange = {(event)=>setPostData({...postData,question:event.target.value})}
@@ -87,14 +85,6 @@ const Clear = ()=>{
                 <Button variant="contained" color="secondary" size="small" onClick={Clear} fullWidth className={classes.buttonSubmit}>Clear</Button>
             </form>
             </Paper>
-        ):(
-         <>
-          <Typography variant="h6"color="primary">Please Login to have full access</Typography>
-         </>
-        )
-           
-        }
-        </>
     )
 }
 

@@ -9,28 +9,44 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import {Avatar,Button}from '@material-ui/core';
 import useStyles from "../../styles";
-import { useHistory } from 'react-router-dom';
+import decode from 'jwt-decode'
+import { useHistory,useLocation} from 'react-router-dom';
+import {useDispatch} from 'react-redux'
+
 
 const Navbar = () => {
 
     const classes = useStyles();
-    const history=useHistory()
+    const history=useHistory();
+    const dispatch = useDispatch();
+    const location = useLocation();
+
     const [value, setValue] = React.useState(0);
     const [user,setUser] = React.useState(JSON.parse(localStorage.getItem('profile')))
 
-     React.useEffect(()=>{
-        const token = user?.token
-        setUser(JSON.parse(localStorage.getItem('profile')))
-     },[])
+     
 
      const handleSignIn = ()=>{
         history.push('/login')
      }
      const handleLogout = ()=>{
-      localStorage.clear()
+      dispatch({type:'LOGOUT'})
+      history.push('/')
+      setUser(null)
+      // localStorage.clear()
     }
 
-     
+    React.useEffect(()=>{
+
+      const token = user?.token
+      // if(token){
+      //  const decodedToken = decode(token)
+      //  if(decodedToken.exp*1000 < new Date().getTime()) handleLogout()
+      // }
+      setUser(JSON.parse(localStorage.getItem('profile')))
+
+   },[location])
+   
     return (
         <div>
         <AppBar
@@ -39,15 +55,15 @@ const Navbar = () => {
         color="inherit"
         elevation={0}
       >
-        <Typography className={classes.heading} variant="h6" align="center">
-          Student Connection
-        </Typography>
         <img
           className={classes.image}
           src={StudentQuestions}
           alt="student-connect"
           height="60"
         />
+        <Typography className={classes.heading} variant="h6" align="center">
+          Student Connect
+        </Typography>
         <BottomNavigation
           value={value}
           onChange={(event, newValue) => {
