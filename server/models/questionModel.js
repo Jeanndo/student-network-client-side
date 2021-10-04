@@ -10,9 +10,9 @@ const questionSchema  = mongoose.Schema({
       type:[String],
       default:[]
     },
-    anwers:{
-      type:String,
-      default:''
+    answers:{
+      type:[String],
+      default:[]
       },
     createdAt:{
         type:Date,
