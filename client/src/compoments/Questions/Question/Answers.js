@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Answers =  ({question})=>{
 
-  console.log("ANswer",question)
+  // console.log("ANswer",question)
 const classes  =useStyles();
 const [user,setUser] = React.useState(JSON.parse(localStorage.getItem('profile')))
     return (

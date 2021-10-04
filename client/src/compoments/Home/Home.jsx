@@ -29,7 +29,7 @@ export const Home = () => {
             spacing={0}
             elevation={0}
           >
-            <Grid item xs={12} sm={7} className="scrollable" elevation={0}>
+            <Grid item xs={12} sm={8} className="scrollable" elevation={0}>
               <QUESTIONS setCurrentId={setCurrentId} />
             </Grid>
             <Grid item xs={12} sm={4} className="form-position" elevation={0}>

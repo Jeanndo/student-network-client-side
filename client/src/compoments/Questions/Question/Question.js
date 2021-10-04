@@ -3,12 +3,12 @@ import useStyles from "./styles";
 import {
   Card,
   CardActions,
-  CardMedia,
   Button,
   Typography,
   TextField,
 } from "@material-ui/core";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import moment from "moment";
@@ -22,10 +22,8 @@ import {
 
 const QUESTION = ({ question, setCurrentId }) => {
   const classes = useStyles();
-  const [user, setUser] = React.useState(
-    JSON.parse(localStorage.getItem("profile"))
-  );
-
+  const user = JSON.parse(localStorage.getItem("profile"))
+  
   const dispatch = useDispatch();
   const [formData, setFormData] = React.useState({ answer: "" });
 
@@ -39,16 +37,31 @@ const QUESTION = ({ question, setCurrentId }) => {
   };
 
   //  console.log("answer:",formData)
+
+  const Likes = () => {
+    if (question.likes.length > 0) {
+      return question.likes.find((like) => like === (user?.result?.googleId || user?.result?._id))
+        ? (
+          <><ThumbUpAltIcon fontSize="small" />&nbsp;{question.likes.length > 2 ? `You and ${question.likes.length - 1} others` : `${question.likes.length} like${question.likes.length > 1 ? 's' : ''}` }</>
+        ) : (
+          <><ThumbUpAltOutlined fontSize="small" />&nbsp;{question.likes.length} {question.likes.length === 1 ? 'Like' : 'Likes'}</>
+        );
+    }
+
+    return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
+  };
+
   return (
     <Card className={classes.card}>
       <div>
         <Typography style={{ marginLeft: "50px" }} color="primary" variant="p">
-          {`${user?.result?.familyName} Postesd `}
+          {`${question?.name} Postesd `}
           {moment(question.createdAt).fromNow()}
         </Typography>
       </div>
       <div className={classes.overlay2}>
-        <Button
+        {(user?.result?.googleId===question.creator)&&(
+           <Button
           size="small"
           variant="outlined"
           color="primary"
@@ -57,6 +70,7 @@ const QUESTION = ({ question, setCurrentId }) => {
           <EditIcon fontSize="default" color="primary" />
           Edit
         </Button>
+        )}
       </div>
       <Typography style={{ marginLeft: "50px" }} color="primary" variant="p">
         {question.title}
@@ -73,46 +87,48 @@ const QUESTION = ({ question, setCurrentId }) => {
         <div className="Answers">
           <Answers question={question} />
         </div>
+      {(user)&&(
         <form
-          autoComplete="off"
-          noValidate
-          className={`${classes.root} ${classes.form}`}
-          onSubmit={handleSubmit}
+        autoComplete="off"
+        noValidate
+        className={`${classes.root} ${classes.form}`}
+        onSubmit={handleSubmit}
         >
-          <TextField
-            variant="outlined"
-            label="Answer"
-            fullWidth
-            multiline
-            rows={4}
-            value={formData.answer}
-            onChange={(event) =>
-              setFormData({ ...formData, answer: event.target.value })
-            }
-          />
-
-          <Button
-            className={classes.postAnswer}
-            variant="outlined"
-            color="primary"
-            size="small"
-            type="submit"
-          >
-            Post Answer
-          </Button>
+        <TextField
+          variant="outlined"
+          label="Answer"
+          fullWidth
+          multiline
+          rows={4}
+          value={formData.answer}
+          onChange={(event) =>
+            setFormData({ ...formData, answer: event.target.value })
+          }
+        />
+        <Button
+          className={classes.postAnswer}
+          variant="outlined"
+          color="primary"
+          size="small"
+          type="submit"
+        >
+          Post Answer
+        </Button>
         </form>
+      )}
       </div>
-
       <CardActions className={classes.cardActions}>
         <Button
           size="small"
           color="primary"
+          disabled={!user?.result}
           onClick={() => dispatch(likeQuestion(question._id))}
         >
-          <ThumbUpAltIcon fontSize="small" />
-          Like {question.likeCount}
+           <Likes/>
         </Button>
-        <Button
+
+       { (user?.result?.googleId===question.creator)&&(
+          <Button
           size="small"
           variant="outlined"
           color="secondary"
@@ -121,6 +137,8 @@ const QUESTION = ({ question, setCurrentId }) => {
           <DeleteIcon fontSize="small" />
           Delete
         </Button>
+       )
+        }
       </CardActions>
     </Card>
   );
