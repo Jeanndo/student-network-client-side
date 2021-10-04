@@ -17,4 +17,4 @@ export const createQuestion  = (newQuestion)=>API.post('/questions',newQuestion)
 export const updateQuestion  = (id,updatedQuestion)=>API.patch(`/questions/${id}`,updatedQuestion);
 export const deleteQuestion  = (id)=>API.delete(`/questions/${id}`);
 export const likeQuestion  = (id)=>API.patch(`/questions/${id}/likeQuestion`);
-export const answerQuestion = (id,answer)=>API.patch(`/questions/${id}/answerQuestion`,answer)
+export const answerQuestion = (value,id)=>API.post(`/questions/${id}/answerQuestion`,{value})

@@ -10,5 +10,5 @@ router.post('/',auth,createQuestion);
 router.patch('/:id',auth,updateQuestion);
 router.delete('/:id',auth,deleteQuestion);
 router.patch('/:id/likeQuestion',auth,likeQuestion)
-router.patch('/:id/answerQuestion',auth,answerQuestion)
+router.post('/:id/answerQuestion',auth,answerQuestion)
 export default router;

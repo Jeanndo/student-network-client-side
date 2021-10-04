@@ -80,16 +80,33 @@ export const likeQuestion = async(req,res) =>{
 
 }
 
+// export const answerQuestion = async(req,res)=>{
+//   const {id} = req.params;
+//   const {answer} =req.body;
+
+//   console.log("question and id",answer,id)
+
+//   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No Question with that id");
+
+//   const question =  await QUESTION.findById(id);
+//   const newQuestion = question.anwers=answer;
+//   const answeredQuestion = await QUESTION.findByIdAndUpdate(id,{anwers:newQuestion},{new:true})
+//   res.json(answeredQuestion)
+// }
+
 export const answerQuestion = async(req,res)=>{
   const {id} = req.params;
-  const {answer} =req.body;
+  const {value} =req.body;
 
-  console.log("question and id",answer,id)
+  console.log(value,id)
 
-  if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No Question with that id");
+ if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No Question with that id");
 
   const question =  await QUESTION.findById(id);
-  const newQuestion = question.anwers=answer;
-  const answeredQuestion = await QUESTION.findByIdAndUpdate(id,{anwers:newQuestion},{new:true})
+  console.log("question",question)
+
+  question.answers.push(value)
+  
+  const answeredQuestion = await QUESTION.findByIdAndUpdate(id,question,{new:true})
   res.json(answeredQuestion)
 }
