@@ -14,7 +14,7 @@ const GoogleAuth = () => {
   const googleSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
-
+    // console.log(result)
     try {
       dispatch({ type: "AUTH", data: { result, token } });
       history.push("/");
@@ -30,7 +30,7 @@ const GoogleAuth = () => {
   return (
     <div className={classes.googleLoginContainer}>
       <GoogleLogin
-        clientId="65688288942-pf0sgh5gcvnneskbgspl6mel27bbuf91.apps.googleusercontent.com"
+        clientId="1073343439052-3t1dcvrgadesbemgtmgu23u7tmmd9up3.apps.googleusercontent.com"
         render={(renderProps) => (
           <Button
             className={classes.googleButton}
