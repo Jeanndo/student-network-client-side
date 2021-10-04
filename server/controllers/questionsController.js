@@ -12,8 +12,8 @@ export const getAllQuestions = async (req, res) => {
 
 export const createQuestion = async (req, res) => {
   const question = req.body;
-  const newQuestion = new QUESTION(question);
-
+  const newQuestion = new QUESTION({...question,creator:req.userId,createdAt:new Date().toISOString()});
+  // const newQuestion = new QUESTION(question);
   try {
     await newQuestion.save();
     res.status(201).json(newQuestion);
@@ -43,19 +43,42 @@ export const deleteQuestion = async (req, res) => {
 
 };
 
-export const likeQuestion = async(req,res) =>{
+// export const likeQuestion = async(req,res) =>{
 
+//   const { id } = req.params;
+//   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No Question with that id");
+
+//   const question = await QUESTION.findById(id);
+
+//   const updatedQuestion = await QUESTION.findByIdAndUpdate(id,{likeCount:question.likeCount+1},{new:true})
+
+//   res.json(updatedQuestion)
+
+// }
+
+
+export const likeQuestion = async(req,res) =>{
   const { id } = req.params;
+  if(!req.userId) return res.json({message:'Unauthenticated'});
+
   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("No Question with that id");
 
   const question = await QUESTION.findById(id);
 
-  const updatedQuestion = await QUESTION.findByIdAndUpdate(id,{likeCount:question.likeCount+1},{new:true})
+  const index = question.likes.findIndex((id)=>id===String(req.userId));
+  if(index===-1){
+ //like question
+ question.likes.push(req.userId);
+  }else{
+ //dislike
+  question.likes = question.likes.filter((id)=>id!==String(req.userId));
+  }
+
+  const updatedQuestion = await QUESTION.findByIdAndUpdate(id,question,{new:true})
 
   res.json(updatedQuestion)
 
 }
-
 
 export const answerQuestion = async(req,res)=>{
   const {id} = req.params;

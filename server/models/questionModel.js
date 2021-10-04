@@ -4,10 +4,11 @@ const questionSchema  = mongoose.Schema({
     question:String,
     title:String,
     selectedFile:String,
+    name:String,
     creator:String,
-    likeCount:{
-      type:Number,
-      default:0
+    likes:{
+      type:[String],
+      default:[]
     },
     anwers:{
       type:String,
