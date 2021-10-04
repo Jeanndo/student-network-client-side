@@ -61,10 +61,10 @@ const Navbar = () => {
           alt="student-connect"
           height="60"
         />
-        <Typography className={classes.heading} variant="h6" align="center">
+        <Typography className={classes.heading} variant="h6" align="center" style={{marginRight:'50px'}}>
           Student Connect
         </Typography>
-        <BottomNavigation
+        {/* <BottomNavigation
           value={value}
           onChange={(event, newValue) => {
             setValue(newValue);
@@ -75,10 +75,10 @@ const Navbar = () => {
           <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
           <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
           <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
-        </BottomNavigation>
+        </BottomNavigation> */}
         {user&&(<>
         <Avatar alt={user?.result?.familyName} src={user?.result?.imageUrl} />
-        <Typography style={{color:'blue'}}>
+        <Typography style={{color:'blue',marginLeft:'10px'}}>
          {user?.result?.familyName}
         </Typography>
         </>

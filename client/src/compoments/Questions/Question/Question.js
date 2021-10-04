@@ -5,7 +5,6 @@ import {
   CardActions,
   Button,
   Typography,
-  TextField,
 } from "@material-ui/core";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
@@ -17,7 +16,6 @@ import { useDispatch } from "react-redux";
 import {
   deleteQuestion,
   likeQuestion,
-  answerQuestion,
 } from "../../../redux/actions/questions";
 
 const QUESTION = ({ question, setCurrentId }) => {
@@ -25,17 +23,6 @@ const QUESTION = ({ question, setCurrentId }) => {
   const user = JSON.parse(localStorage.getItem("profile"))
   
   const dispatch = useDispatch();
-  const [formData, setFormData] = React.useState({ answer: "" });
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(answerQuestion(question._id, formData));
-    Clear();
-  };
-  const Clear = () => {
-    setFormData({ answer: "" });
-  };
-
   //  console.log("answer:",formData)
 
   const Likes = () => {
@@ -87,36 +74,7 @@ const QUESTION = ({ question, setCurrentId }) => {
         <div className="Answers">
           <Answers question={question} />
         </div>
-      {(user)&&(
-        <form
-        autoComplete="off"
-        noValidate
-        className={`${classes.root} ${classes.form}`}
-        onSubmit={handleSubmit}
-        >
-        <TextField
-          variant="outlined"
-          label="Answer"
-          fullWidth
-          multiline
-          rows={4}
-          value={formData.answer}
-          onChange={(event) =>
-            setFormData({ ...formData, answer: event.target.value })
-          }
-        />
-        <Button
-          className={classes.postAnswer}
-          variant="outlined"
-          color="primary"
-          size="small"
-          type="submit"
-        >
-          Post Answer
-        </Button>
-        </form>
-      )}
-      </div>
+           </div>
       <CardActions className={classes.cardActions}>
         <Button
           size="small"

@@ -62,10 +62,11 @@ export const likeQuestion = (id)=>async (dispatch)=>{
   }
 }
 
-export const answerQuestion = (id,answer)=>async (dispatch)=>{
+export const answerQuestion = (value,id)=>async (dispatch)=>{
   try {
-    const {data} = await api.answerQuestion(id,answer);
+    const {data} = await api.answerQuestion(value,id);
     dispatch({type:UPDATE,payload:data});
+    return data.answers
   } catch (error) {
     console.log(error);
   }
