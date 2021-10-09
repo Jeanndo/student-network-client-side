@@ -59,5 +59,5 @@ export default makeStyles({
  image:{
    width:"100%",
    height:'auto'
- }
+ },
 });

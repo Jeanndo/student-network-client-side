@@ -14,10 +14,14 @@ const GoogleAuth = () => {
   const googleSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
-    // console.log(result)
+    console.log(result.googleId)
     try {
       dispatch({ type: "AUTH", data: { result, token } });
-      history.push("/");
+      if(result?.googleId==='116801643146005234837'){
+        history.push("/dashboard");
+      }else{
+        history.push("/")
+      }
     } catch (error) {
       console.log(error);
     }
