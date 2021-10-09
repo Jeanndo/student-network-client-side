@@ -21,7 +21,6 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const [value, setValue] = React.useState(0);
     const [user,setUser] = React.useState(JSON.parse(localStorage.getItem('profile')))
 
      

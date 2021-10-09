@@ -73,8 +73,9 @@ if(!user?.result?.name){
                 value={postData.question}
                 onChange = {(event)=>setPostData({...postData,question:event.target.value})}
                 />
-                <div className={classes.fileInput}>
+                <div className={classes.fileInput} >
                 <FileBase 
+                  style={{cursor:'pointer'}}
                     type="file"
                     multiple={false}
                     onDone ={({base64})=>setPostData({...postData,selectedFile:base64})}
